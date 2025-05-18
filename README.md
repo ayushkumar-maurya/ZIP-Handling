@@ -1,2 +1,2 @@
 # Zip-Handling
-Utility project to help user with various zip operations.
+A project to help user with various zip operations.
