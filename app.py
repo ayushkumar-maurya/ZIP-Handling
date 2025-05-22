@@ -1,54 +1,62 @@
 from tkinter import *
+from features import add_feature, merge_feature
 from utils import colours, button_attributes
+
+
+def on_menu_btn_enter(e):
+	e.widget.config(bg=colours.btn_grp_hover_bg)
+
+
+def on_menu_btn_leave(e):
+	e.widget.config(bg=colours.btn_grp_bg)
+	if active_feature['btn'] is not None:
+		active_feature['btn'].config(bg=colours.btn_active_bg)
+
+
+def on_menu_btn_click(btn):
+	if active_feature['btn'] is not None:
+		active_feature['btn'].config(bg=colours.btn_grp_bg)
+	active_feature['btn'] = btn
+	active_feature['btn'].config(bg=colours.btn_active_bg)
+
+	if active_feature['frame'] is not None:
+		active_feature['frame'].destroy()
+
+	if btn['text'] == 'Add':
+		active_feature['frame'] = add_feature(root)
+	elif btn['text'] == 'Merge':
+		active_feature['frame'] = merge_feature(root)
+
 
 root = Tk()
 root.title("Zip Handling")
 root.state("zoomed")
 
+active_feature = {'btn': None, 'frame': None}
 
-def on_enter(e):
-	e.widget.config(bg=colours.btn_grp_hover_bg)
+menu_frame = Frame(root, bg=colours.bg1)
+menu_frame.place(x=0, y=0, width=200, relheight=1)
 
-
-def on_leave(e, active_btn):
-	e.widget.config(bg=colours.btn_grp_bg)
-	if active_btn[0] is not None:
-		active_btn[0].config(bg=colours.btn_active_bg)
-
-
-def btn_on_click(active_btn, btn):
-	if active_btn[0] is not None:
-		active_btn[0].config(bg=colours.btn_grp_bg)
-	btn.config(bg=colours.btn_active_bg)
-	active_btn[0] = btn
-
-
-left_frame = Frame(root, bg=colours.bg1)
-left_frame.place(x=0, y=0, width=200, relheight=1)
-
-right_frame = Frame(root, bg=colours.bg2)
-right_frame.place(x=200, y=0, relwidth=1, relheight=1)
-
-last_clicked_btn = [None]
-
-add_btn = Button(left_frame, text="Add",
+add_menu_btn = Button(menu_frame, text="Add",
 				bg=colours.btn_grp_bg, activebackground=colours.btn_grp_hover_bg,
-				bd=button_attributes.bd, pady=button_attributes.pady,
-				command=lambda: btn_on_click(last_clicked_btn, add_btn))
-add_btn.grid(row=0, column=0, sticky=button_attributes.sticky)
-add_btn.bind("<Enter>", on_enter)
-add_btn.bind("<Leave>", lambda e: on_leave(e, last_clicked_btn))
+				bd=button_attributes.bd, anchor=button_attributes.anchor,
+				padx=button_attributes.padx, pady=button_attributes.pady,
+				command=lambda: on_menu_btn_click(add_menu_btn))
 
-merge_btn = Button(left_frame, text="Merge",
+add_menu_btn.grid(row=0, column=0, sticky=button_attributes.sticky)
+add_menu_btn.bind("<Enter>", on_menu_btn_enter)
+add_menu_btn.bind("<Leave>", lambda e: on_menu_btn_leave(e))
+
+merge_menu_btn = Button(menu_frame, text="Merge",
 				bg=colours.btn_grp_bg, activebackground=colours.btn_grp_hover_bg,
-				bd=button_attributes.bd, pady=button_attributes.pady,
-				command=lambda: btn_on_click(last_clicked_btn, merge_btn))
-merge_btn.grid(row=1, column=0, sticky=button_attributes.sticky)
-merge_btn.bind("<Enter>", on_enter)
-merge_btn.bind("<Leave>", lambda e: on_leave(e, last_clicked_btn))
+				bd=button_attributes.bd, anchor=button_attributes.anchor,
+				padx=button_attributes.padx, pady=button_attributes.pady,
+				command=lambda: on_menu_btn_click(merge_menu_btn))
 
-left_frame.grid_columnconfigure(0, weight=1)
+merge_menu_btn.grid(row=2, column=0, sticky=button_attributes.sticky)
+merge_menu_btn.bind("<Enter>", on_menu_btn_enter)
+merge_menu_btn.bind("<Leave>", lambda e: on_menu_btn_leave(e))
 
-Label(right_frame, text="Click").pack()
+menu_frame.grid_columnconfigure(0, weight=1)
 
 root.mainloop()
