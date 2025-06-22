@@ -24,9 +24,9 @@ def on_menu_btn_click(btn):
 		widget.destroy()
 
 	if btn['text'] == 'Add':
-		add_feature(feature_frame)
+		add_feature.main(feature_frame)
 	elif btn['text'] == 'Merge':
-		merge_feature(feature_frame)
+		merge_feature.main(feature_frame)
 
 
 def create_menu_btns():
@@ -46,9 +46,9 @@ def create_menu_btns():
 		)
 
 		btn.config(command=lambda b=btn: on_menu_btn_click(b))
-		btn.grid(row=i, column=0, sticky="ew")
 		btn.bind("<Enter>", on_menu_btn_enter)
 		btn.bind("<Leave>", on_menu_btn_leave)
+		btn.grid(row=i, column=0, sticky="ew")
 		btns.append(btn)
 	menu_frame.grid_columnconfigure(0, weight=1)
 
