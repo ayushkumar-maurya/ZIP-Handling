@@ -85,6 +85,6 @@ progress = ttk.Progressbar(menu_frame, orient="horizontal", mode="indeterminate"
 progress.grid(row=menu_btn_count, column=0, pady=(15, 1), sticky="sew")
 progress.start(10)
 
-menu_frame.grid_rowconfigure(2, weight=1)
+menu_frame.grid_rowconfigure(menu_btn_count, weight=1)
 
 root.mainloop()
