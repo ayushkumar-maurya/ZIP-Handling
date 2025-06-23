@@ -24,7 +24,7 @@ def get_entry_frame(parent, hide=False):
 	else:
 		entry = Entry(entry_frame, bg=attr_entry_bg, bd=0, show="*")
 	entry.pack(fill="x")
-	return {entry_frame: entry_frame, entry: entry}
+	return {'entry_frame': entry_frame, 'entry': entry}
 
 
 def get_btn(parent, text):

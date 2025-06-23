@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 from features import add_feature, merge_feature
 
 
@@ -52,7 +53,7 @@ def create_menu_btns():
 		btns.append(btn)
 	menu_frame.grid_columnconfigure(0, weight=1)
 
-	return btns
+	return {'btns': btns, 'btn_count': len(btns_text)}
 
 
 # Attributes
@@ -78,6 +79,12 @@ menu_frame.place(x=0, y=0, width=200, relheight=1)
 feature_frame = Frame(root, bg=attr_bg2, padx=10, pady=10)
 feature_frame.place(x=200, y=0, width=root.winfo_screenwidth()-200, relheight=1)
 
-menu_btns = create_menu_btns()
+menu_btns, menu_btn_count = create_menu_btns().values()
+
+progress = ttk.Progressbar(menu_frame, orient="horizontal", mode="indeterminate")
+progress.grid(row=menu_btn_count, column=0, pady=(15, 1), sticky="sew")
+progress.start(10)
+
+menu_frame.grid_rowconfigure(2, weight=1)
 
 root.mainloop()
