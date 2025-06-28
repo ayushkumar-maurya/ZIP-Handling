@@ -19,15 +19,17 @@ def on_menu_btn_click(btn):
 	active_btn[0] = btn
 	active_btn[0].config(bg=attr_btn_active_bg)
 
+	show_progress_bar(False)
+
 	root.title('{} - {}'.format(app_title, btn['text']))
 
 	for widget in feature_frame.winfo_children():
 		widget.destroy()
 
 	if btn['text'] == 'Add':
-		add_feature.main(feature_frame)
+		add_feature.main(feature_frame, show_progress_bar)
 	elif btn['text'] == 'Merge':
-		merge_feature.main(feature_frame)
+		merge_feature.main(feature_frame, show_progress_bar)
 
 
 def create_menu_btns():
@@ -56,6 +58,13 @@ def create_menu_btns():
 	return {'btns': btns, 'btn_count': len(btns_text)}
 
 
+def show_progress_bar(show=True):
+	if show:
+		progress.grid(row=menu_btn_count, column=0, pady=(15, 1), sticky="sew")
+	else:
+		progress.grid_forget()
+
+
 # Attributes
 '''---------------------------------'''
 attr_bg1 = '#D9D9D9'
@@ -82,7 +91,6 @@ feature_frame.place(x=200, y=0, width=root.winfo_screenwidth()-200, relheight=1)
 menu_btns, menu_btn_count = create_menu_btns().values()
 
 progress = ttk.Progressbar(menu_frame, orient="horizontal", mode="indeterminate")
-progress.grid(row=menu_btn_count, column=0, pady=(15, 1), sticky="sew")
 progress.start(10)
 
 menu_frame.grid_rowconfigure(menu_btn_count, weight=1)
