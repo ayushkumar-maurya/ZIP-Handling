@@ -1,5 +1,7 @@
 from tkinter import filedialog
+from tkinter import messagebox
 from utils.common_feature_items import *
+from utils.zip_handler import ZipHandler
 
 
 def new_files_input(new_files_entry):
@@ -28,12 +30,19 @@ def existing_zip_input(existing_zip_entry, dest_path_entry):
 
 
 def perform_add_operation(entries, show_progress_bar):
-	show_progress_bar()
-
-	new_files_path = entries['new_files'].get()
-	existing_zip_path = entries['existing_zip'].get()
-	dest_path = entries['dest_path'].get()
+	new_files_path = entries['new_files'].get().strip()
+	existing_zip_path = entries['existing_zip'].get().strip()
+	dest_path = entries['dest_path'].get().strip()
 	password = entries['pass'].get()
+
+	if new_files_path == "":
+		messagebox.showerror("Required field missing", "Please select files to add.")
+	elif existing_zip_path == "":
+		messagebox.showerror("Required field missing", "Please select existing zip.")
+	else:
+		zip_handler = ZipHandler()
+		if not zip_handler.extract_all_files(existing_zip_path, password):
+			messagebox.showerror("Password required", "Zip is password protected. Please enter correct password.")
 
 
 def main(parent, show_progress_bar):
