@@ -1,3 +1,4 @@
+import os
 from tkinter import filedialog
 from tkinter import messagebox
 from utils.common_feature_items import *
@@ -12,7 +13,7 @@ def new_files_input(new_files_entry):
 	new_files_path_str = ""
 	for i in range(len(new_files)):
 		if i > 0:
-			new_files_path_str += "; "
+			new_files_path_str += " | "
 		new_files_path_str += new_files[i]
 	new_files_entry.delete(0, END)
 	new_files_entry.insert(0, new_files_path_str)
@@ -21,7 +22,7 @@ def new_files_input(new_files_entry):
 def existing_zip_input(existing_zip_entry, zip_target_entry):
 	existing_zip = filedialog.askopenfilename(
 		title="Select existing zip",
-		filetypes=[("Zip File", "*.zip"), ("Rar File", "*.rar"), ("7z File", "*.7z")]
+		filetypes=[("Zip File", "*.zip")]
 	)
 	existing_zip_entry.delete(0, END)
 	existing_zip_entry.insert(0, existing_zip)
@@ -35,22 +36,53 @@ def save_loc_input(save_loc_entry):
 	save_loc_entry.insert(0, save_loc)
 
 
-def perform_add_operation(entries, show_progress_bar):
-	new_files = entries['new_files'].get().strip()
-	existing_zip = entries['existing_zip'].get().strip()
-	zip_target = entries['zip_target'].get().strip()
-	save_loc = entries['save_loc'].get().strip()
-	pwd = entries['pwd'].get()
+def validate_and_get_inputs(entries):
+	res = {'inputs': None, 'error': None}
 
-	if new_files == "":
-		messagebox.showerror("Required field missing", "Please select files to add.")
-	elif existing_zip == "":
-		messagebox.showerror("Required field missing", "Please select existing zip.")
-	elif save_loc == "":
-		messagebox.showerror("Required field missing", "Please mention location to save modified zip.")
+	new_files = entries['new_files'].get()
+	existing_zip = entries['existing_zip'].get()
+	zip_target = entries['zip_target'].get()
+	pwd = entries['pwd'].get()
+	save_loc = entries['save_loc'].get()
+
+	new_files_list = new_files.split("|")
+	for i in range(len(new_files_list)):
+		new_files_list[i] = new_files_list[i].strip()
+		if not os.path.isfile(new_files_list[i]):
+			res['error'] = "Please select valid files to add."
+			return res
+
+	existing_zip = existing_zip.strip()
+	_, existing_zip_ext = os.path.splitext(existing_zip)
+	if not os.path.isfile(existing_zip) or existing_zip_ext != ".zip":
+		res['error'] = "Please select valid zip."
+		return res
+
+	zip_target = zip_target.strip()
+
+	save_loc = save_loc.strip()
+	if not os.path.isdir(save_loc):
+		res['error'] = "Please mention valid location to save modified zip."
+		return res
+
+	res['inputs'] = {
+		'new_files_list': new_files_list,
+		'existing_zip': existing_zip,
+		'zip_target': zip_target,
+		'pwd': pwd,
+		'save_loc': save_loc
+	}
+
+	return res
+
+
+def perform_add_operation(entries, show_progress_bar):
+	inputs, error = validate_and_get_inputs(entries).values()
+	if error:
+		messagebox.showerror("Invalid Input", error)
 	else:
 		zip_handler = ZipHandler()
-		res = zip_handler.add_files_to_existing_zip(existing_zip, pwd)
+		res = zip_handler.add_files_to_existing_zip(inputs['existing_zip'], inputs['pwd'])
 		if res['status']:
 			messagebox.showinfo(res['msg_title'], res['msg_desc'])
 		else:
