@@ -2,4 +2,4 @@
 __pycache__
 *.pyc
 
-zip_operations_temp/
+temp_zip_operations/
