@@ -19,15 +19,13 @@ def new_files_input(new_files_entry):
 	new_files_entry.insert(0, new_files_path_str)
 
 
-def existing_zip_input(existing_zip_entry, zip_target_entry):
+def existing_zip_input(existing_zip_entry):
 	existing_zip = filedialog.askopenfilename(
 		title="Select existing zip",
 		filetypes=[("Zip File", "*.zip")]
 	)
 	existing_zip_entry.delete(0, END)
 	existing_zip_entry.insert(0, existing_zip)
-	zip_target_entry.delete(0, END)
-	zip_target_entry.insert(0, existing_zip)
 
 
 def save_loc_input(save_loc_entry):
@@ -66,11 +64,11 @@ def validate_and_get_inputs(entries):
 		return res
 
 	res['inputs'] = {
-		'new_files_list': new_files_list,
-		'existing_zip': existing_zip,
-		'zip_target': zip_target,
+		'src_files': new_files_list,
+		'src_zip': existing_zip,
+		'zip_target_dir': zip_target,
 		'pwd': pwd,
-		'save_loc': save_loc
+		'dest_dir': save_loc
 	}
 
 	return res
@@ -82,7 +80,7 @@ def perform_add_operation(entries, show_progress_bar):
 		messagebox.showerror("Invalid Input", error)
 	else:
 		zip_handler = ZipHandler()
-		res = zip_handler.add_files_to_existing_zip(inputs['existing_zip'], inputs['pwd'])
+		res = zip_handler.add_files_to_existing_zip(**inputs)
 		if res['status']:
 			messagebox.showinfo(res['msg_title'], res['msg_desc'])
 		else:
@@ -126,6 +124,6 @@ def main(parent, show_progress_bar):
 
 	# Configuring buttons command
 	new_files_browse_btn.config(command=lambda: new_files_input(entries['new_files']))
-	existing_zip_browse_btn.config(command=lambda: existing_zip_input(entries['existing_zip'], entries['zip_target']))
+	existing_zip_browse_btn.config(command=lambda: existing_zip_input(entries['existing_zip']))
 	save_loc_browse_btn.config(command=lambda: save_loc_input(entries['save_loc']))
 	add_btn.config(command=lambda: perform_add_operation(entries, show_progress_bar))
