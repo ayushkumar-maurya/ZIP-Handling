@@ -18,6 +18,11 @@ class ZipHandler:
 		for file in src_files:
 			shutil.copy(file, dest_dir)
 
+	@staticmethod
+	def __remove_file(file_path):
+		if os.path.exists(file_path):
+			os.remove(file_path)
+
 	def extract_zip_files(self, src_zip, dest_dir, pwd=""):
 		try:
 			with pyzipper.AESZipFile(src_zip) as zf:
@@ -36,7 +41,23 @@ class ZipHandler:
 			msg_desc="Files are extracted successfully at {}".format(dest_dir)
 		)
 
-	def add_files_to_existing_zip(self, src_files, src_zip, zip_target_dir, pwd, dest_dir):
+	def create_zip(self, src_dir, dest_zip, pwd=""):
+		self.__remove_file(dest_zip)
+		with pyzipper.AESZipFile(dest_zip, 'w') as zf:
+			if pwd != "":
+				zf.setpassword(pwd.encode())
+				zf.setencryption(pyzipper.WZ_AES, nbits=256)
+			for (root, dirs, files) in os.walk(src_dir, topdown=True):
+				for dir in dirs:
+					dir_path = os.path.join(root, dir)
+					arcname = os.path.relpath(dir_path, start=src_dir).replace(os.sep, "/").rstrip("/") + "/"
+					zf.writestr(arcname, b"")
+				for file in files:
+					file_path = os.path.join(root, file)
+					arcname = os.path.relpath(file_path, start=src_dir)
+					zf.write(file_path, arcname=arcname)
+
+	def add_files_to_existing_zip(self, src_files, src_zip, zip_target_dir, pwd, dest_zip):
 		extracted_files_path = os.path.join(self.__path, "extracted_files")
 		# Extracting zip files.
 		res = self.extract_zip_files(src_zip, extracted_files_path, pwd)
@@ -46,14 +67,21 @@ class ZipHandler:
 			if os.path.isdir(zip_target_dir_path):
 				# Copying source files to target folder present under extracted zip directory.
 				self.__copy_files(src_files, zip_target_dir_path)
-
+				# Creating zip based on files present under extracted zip directory.
+				self.create_zip(extracted_files_path, dest_zip, pwd)
+				res = self.__generate_response(
+					status=True,
+					msg_title="Files added successfully",
+					msg_desc="Files added successfully. Zip Name: {}".format(os.path.basename(dest_zip))
+				)
 			else:
-				return self.__generate_response(
+				res = self.__generate_response(
 					status=False,
 					msg_title="Invalid target folder within zip",
 					msg_desc="{} is not present under existing zip.".format(zip_target_dir)
 				)
 
+		self.clear()
 		return res
 
 	def clear(self):

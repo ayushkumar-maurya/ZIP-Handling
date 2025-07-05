@@ -51,7 +51,7 @@ def validate_and_get_inputs(entries):
 			return res
 
 	existing_zip = existing_zip.strip()
-	_, existing_zip_ext = os.path.splitext(existing_zip)
+	existing_zip_name, existing_zip_ext = os.path.splitext(existing_zip)
 	if not os.path.isfile(existing_zip) or existing_zip_ext != ".zip":
 		res['error'] = "Please select valid zip."
 		return res
@@ -62,13 +62,14 @@ def validate_and_get_inputs(entries):
 	if not os.path.isdir(save_loc):
 		res['error'] = "Please mention valid location to save modified zip."
 		return res
+	dest_zip = os.path.join(save_loc, "{} Modified.zip".format(os.path.basename(existing_zip_name)))
 
 	res['inputs'] = {
 		'src_files': new_files_list,
 		'src_zip': existing_zip,
 		'zip_target_dir': zip_target,
 		'pwd': pwd,
-		'dest_dir': save_loc
+		'dest_zip': dest_zip
 	}
 
 	return res
