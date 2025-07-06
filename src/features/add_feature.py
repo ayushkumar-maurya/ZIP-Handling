@@ -76,6 +76,7 @@ def validate_and_get_inputs(entries):
 
 
 def perform_add_operation(entries, show_progress_bar):
+	show_progress_bar()
 	inputs, error = validate_and_get_inputs(entries).values()
 	if error:
 		messagebox.showerror("Invalid Input", error)
@@ -86,6 +87,7 @@ def perform_add_operation(entries, show_progress_bar):
 			messagebox.showinfo(res['msg_title'], res['msg_desc'])
 		else:
 			messagebox.showerror(res['msg_title'], res['msg_desc'])
+	show_progress_bar(False)
 
 
 def main(parent, show_progress_bar):
