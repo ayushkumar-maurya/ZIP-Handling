@@ -2,6 +2,7 @@ import os
 from tkinter import filedialog
 from tkinter import messagebox
 from utils.common_feature_items import *
+from utils.zip_handler import ZipHandler
 
 
 def zip_input(zip_entry):
@@ -63,7 +64,12 @@ def perform_merge_operation(entries, show_progress_bar):
 	if error:
 		messagebox.showerror("Invalid Input", error)
 	else:
-		print(inputs)
+		zip_handler = ZipHandler()
+		res = zip_handler.merge_zips(**inputs)
+		if res['status']:
+			messagebox.showinfo(res['msg_title'], res['msg_desc'])
+		else:
+			messagebox.showerror(res['msg_title'], res['msg_desc'])
 	show_progress_bar(False)
 
 

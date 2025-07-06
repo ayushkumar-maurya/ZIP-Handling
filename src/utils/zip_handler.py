@@ -61,7 +61,6 @@ class ZipHandler:
 		extracted_files_path = os.path.join(self.__path, "extracted_files")
 		# Extracting zip files.
 		res = self.extract_zip_files(src_zip, extracted_files_path, pwd)
-
 		if res['status']:
 			zip_target_dir_path = os.path.join(extracted_files_path, zip_target_dir)
 			if os.path.isdir(zip_target_dir_path):
@@ -79,6 +78,28 @@ class ZipHandler:
 					status=False,
 					msg_title="Invalid target folder within zip",
 					msg_desc="{} is not present under existing zip.".format(zip_target_dir)
+				)
+
+		self.clear()
+		return res
+
+	def merge_zips(self, src_zip, target_zip, src_pwd, target_pwd, dest_zip):
+		extracted_src_files_path = os.path.join(self.__path, "extracted_src_files")
+		extracted_target_files_path = os.path.join(self.__path, "extracted_target_files")
+		# Extracting source zip files.
+		res = self.extract_zip_files(src_zip, extracted_src_files_path, src_pwd)
+		if res['status']:
+			# Extracting target zip files.
+			res = self.extract_zip_files(target_zip, extracted_target_files_path, target_pwd)
+			if res['status']:
+				# Copying source folder to target folder.
+				shutil.copytree(extracted_src_files_path, extracted_target_files_path, dirs_exist_ok=True)
+				# Creating zip based on files present under extracted target zip directory.
+				self.create_zip(extracted_target_files_path, dest_zip, target_pwd)
+				res = self.__generate_response(
+					status=True,
+					msg_title="Zip merged successfully",
+					msg_desc="Zip merged successfully. Zip Name: {}".format(os.path.basename(dest_zip))
 				)
 
 		self.clear()
