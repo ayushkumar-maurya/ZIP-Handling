@@ -1,11 +1,12 @@
 import os
 import shutil
 import pyzipper
+from config import APP_PATH
 
 
 class ZipHandler:
 	def __init__(self):
-		self.__path = os.path.join(os.getcwd(), "temp_zip_operations")
+		self.__path = os.path.join(APP_PATH, "temp_zip_operations")
 		self.clear()
 		os.mkdir(self.__path)
 
