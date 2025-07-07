@@ -24,6 +24,8 @@ class ZipHandler:
 			os.remove(file_path)
 
 	def extract_zip_files(self, src_zip, dest_dir, pwd=""):
+		if os.path.exists(dest_dir):
+			shutil.rmtree(dest_dir)
 		try:
 			with pyzipper.AESZipFile(src_zip) as zf:
 				if pwd != "":
@@ -38,7 +40,7 @@ class ZipHandler:
 		return self.__generate_response(
 			status=True,
 			msg_title="Files extraction completed",
-			msg_desc="Files are extracted successfully at {}".format(dest_dir)
+			msg_desc="Files are extracted successfully at {}".format(os.path.basename(dest_dir))
 		)
 
 	def create_zip(self, src_dir, dest_zip, pwd=""):
