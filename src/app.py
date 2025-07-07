@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import ttk
-from features import add_feature, merge_feature
+from features import create_feature, add_feature, merge_feature
 
 
 def on_menu_btn_enter(e):
@@ -26,7 +26,9 @@ def on_menu_btn_click(btn):
 	for widget in feature_frame.winfo_children():
 		widget.destroy()
 
-	if btn['text'] == 'Add':
+	if btn['text'] == 'Create':
+		create_feature.main(feature_frame, show_progress_bar)
+	elif btn['text'] == 'Add':
 		add_feature.main(feature_frame, show_progress_bar)
 	elif btn['text'] == 'Merge':
 		merge_feature.main(feature_frame, show_progress_bar)
@@ -34,7 +36,7 @@ def on_menu_btn_click(btn):
 
 def create_menu_btns():
 	btns = []
-	btns_text = ['Add', 'Merge']
+	btns_text = ['Create', 'Add', 'Merge']
 
 	for i in range(len(btns_text)):
 		btn = Button(
