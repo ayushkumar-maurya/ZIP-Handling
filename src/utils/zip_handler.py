@@ -1,11 +1,12 @@
 import os
 import shutil
 import pyzipper
+from config import APP_PATH
 
 
 class ZipHandler:
 	def __init__(self):
-		self.__path = os.path.join(os.getcwd(), "temp_zip_operations")
+		self.__path = os.path.join(APP_PATH, "temp_zip_operations")
 		self.clear()
 		os.mkdir(self.__path)
 
@@ -24,6 +25,8 @@ class ZipHandler:
 			os.remove(file_path)
 
 	def extract_zip_files(self, src_zip, dest_dir, pwd=""):
+		if os.path.exists(dest_dir):
+			shutil.rmtree(dest_dir)
 		try:
 			with pyzipper.AESZipFile(src_zip) as zf:
 				if pwd != "":
@@ -38,7 +41,7 @@ class ZipHandler:
 		return self.__generate_response(
 			status=True,
 			msg_title="Files extraction completed",
-			msg_desc="Files are extracted successfully at {}".format(dest_dir)
+			msg_desc="Files are extracted successfully at {}".format(os.path.basename(dest_dir))
 		)
 
 	def create_zip(self, src_dir, dest_zip, pwd=""):

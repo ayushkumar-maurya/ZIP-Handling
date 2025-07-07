@@ -1,6 +1,8 @@
+import os
 from tkinter import *
 from tkinter import ttk
-from features import add_feature, merge_feature
+from config import APP_NAME, APP_PATH
+from features import create_feature, extract_feature, add_feature, merge_feature
 
 
 def on_menu_btn_enter(e):
@@ -21,12 +23,16 @@ def on_menu_btn_click(btn):
 
 	show_progress_bar(False)
 
-	root.title('{} - {}'.format(app_title, btn['text']))
+	root.title('{} - {}'.format(APP_NAME, btn['text']))
 
 	for widget in feature_frame.winfo_children():
 		widget.destroy()
 
-	if btn['text'] == 'Add':
+	if btn['text'] == 'Create':
+		create_feature.main(feature_frame, show_progress_bar)
+	elif btn['text'] == 'Extract':
+		extract_feature.main(feature_frame, show_progress_bar)
+	elif btn['text'] == 'Add':
 		add_feature.main(feature_frame, show_progress_bar)
 	elif btn['text'] == 'Merge':
 		merge_feature.main(feature_frame, show_progress_bar)
@@ -34,7 +40,7 @@ def on_menu_btn_click(btn):
 
 def create_menu_btns():
 	btns = []
-	btns_text = ['Add', 'Merge']
+	btns_text = ['Create', 'Extract', 'Add', 'Merge']
 
 	for i in range(len(btns_text)):
 		btn = Button(
@@ -74,10 +80,12 @@ attr_btn_hover_bg = '#BFBFBF'
 attr_btn_active_bg = attr_bg2
 '''---------------------------------'''
 
-app_title = "Zip Handling"
+
+# Creating project directory.
+os.makedirs(APP_PATH, exist_ok=True)
 
 root = Tk()
-root.title(app_title)
+root.title(APP_NAME)
 root.state("zoomed")
 
 active_btn = [None]
