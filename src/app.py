@@ -2,6 +2,7 @@ import os
 from tkinter import *
 from tkinter import ttk
 from config import APP_NAME, APP_PATH
+from logo import APP_ICON
 from features import create_feature, extract_feature, add_feature, merge_feature
 
 
@@ -87,6 +88,7 @@ os.makedirs(APP_PATH, exist_ok=True)
 root = Tk()
 root.title(APP_NAME)
 root.state("zoomed")
+root.iconphoto(True, PhotoImage(data=APP_ICON))
 
 active_btn = [None]
 
