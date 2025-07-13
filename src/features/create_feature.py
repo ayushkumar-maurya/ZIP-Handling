@@ -47,8 +47,8 @@ def perform_create_operation(entries, show_progress_bar):
 		zip_handler = ZipHandler()
 		zip_handler.create_zip(**inputs)
 		messagebox.showinfo(
-			"Zip created successfully.",
-			"Zip created successfully. Name: {}".format(os.path.basename(inputs['dest_zip']))
+			"ZIP created successfully.",
+			"ZIP created successfully. Name: {}".format(os.path.basename(inputs['dest_zip']))
 		)
 	show_progress_bar(False)
 

@@ -36,7 +36,7 @@ class ZipHandler:
 			return self.__generate_response(
 				status=False,
 				msg_title="Password required",
-				msg_desc="Zip is password protected. Please enter correct password."
+				msg_desc="ZIP is password protected. Please enter correct password."
 			)
 		return self.__generate_response(
 			status=True,
@@ -74,7 +74,7 @@ class ZipHandler:
 				res = self.__generate_response(
 					status=True,
 					msg_title="Files added successfully",
-					msg_desc="Files added successfully. Zip Name: {}".format(os.path.basename(dest_zip))
+					msg_desc="Files added successfully. ZIP Name: {}".format(os.path.basename(dest_zip))
 				)
 			else:
 				res = self.__generate_response(
@@ -101,8 +101,8 @@ class ZipHandler:
 				self.create_zip(extracted_target_files_path, dest_zip, target_pwd)
 				res = self.__generate_response(
 					status=True,
-					msg_title="Zip merged successfully",
-					msg_desc="Zip merged successfully. Zip Name: {}".format(os.path.basename(dest_zip))
+					msg_title="ZIP merged successfully",
+					msg_desc="ZIP merged successfully. ZIP Name: {}".format(os.path.basename(dest_zip))
 				)
 
 		self.clear()

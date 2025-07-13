@@ -8,7 +8,7 @@ from utils.zip_handler import ZipHandler
 def zip_input(zip_entry):
 	selected_zip = filedialog.askopenfilename(
 		title="Select existing zip",
-		filetypes=[("Zip File", "*.zip")]
+		filetypes=[("ZIP File", "*.zip")]
 	)
 	zip_entry.delete(0, END)
 	zip_entry.insert(0, selected_zip)

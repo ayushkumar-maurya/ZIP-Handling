@@ -22,7 +22,7 @@ def new_files_input(new_files_entry):
 def existing_zip_input(existing_zip_entry):
 	existing_zip = filedialog.askopenfilename(
 		title="Select existing zip",
-		filetypes=[("Zip File", "*.zip")]
+		filetypes=[("ZIP File", "*.zip")]
 	)
 	existing_zip_entry.delete(0, END)
 	existing_zip_entry.insert(0, existing_zip)

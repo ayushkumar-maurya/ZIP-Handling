@@ -5,6 +5,4 @@ __pycache__
 build/
 dist/
 
-app.spec
-
-temp_zip_operations/
+ZIP Handling.spec
