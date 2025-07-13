@@ -1,14 +1,21 @@
-# Zip-Handling
-A project to help user with various zip operations.
+# ZIP-Handling
+A project to help user with various ZIP operations.
 
 
-Download `app.exe` and run it to start the application.
+### Windows App:
+Download `ZIP Handling.exe` and run it to start the application.
+
+
+### Main Highlight:
+- All the features listed below are fully compatible with **encrypted ZIP files**.
+- The resultant archive will have **all included files encrypted** for secure storage and transfer.
 
 
 ### Features:
-- Add new files to the existing encrypted zip. Newly added files will also be password protected.
-- Merge two zips together. It will work with encrypted zips as well.
-- Other basic features like creating encrypted zip or extracting files from an encrypted zip.
+- Create a new ZIP archive.
+- Extract all files from an existing ZIP.
+- Add new files to an existing ZIP archive.
+- Merge two existing ZIP archives into one.
 
 
 ### Project setup for developing:

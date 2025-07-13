@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import ttk
 from config import APP_NAME, APP_PATH
 from logo import APP_ICON
+import home
 from features import create_feature, extract_feature, add_feature, merge_feature
 
 
@@ -28,8 +29,12 @@ def on_menu_btn_click(btn):
 
 	for widget in feature_frame.winfo_children():
 		widget.destroy()
+	feature_frame.grid_rowconfigure(0, weight=0)
+	feature_frame.grid_columnconfigure(0, weight=0)
 
-	if btn['text'] == 'Create':
+	if btn['text'] == 'Home':
+		home.main(feature_frame)
+	elif btn['text'] == 'Create':
 		create_feature.main(feature_frame, show_progress_bar)
 	elif btn['text'] == 'Extract':
 		extract_feature.main(feature_frame, show_progress_bar)
@@ -41,7 +46,7 @@ def on_menu_btn_click(btn):
 
 def create_menu_btns():
 	btns = []
-	btns_text = ['Create', 'Extract', 'Add', 'Merge']
+	btns_text = ['Home', 'Create', 'Extract', 'Add', 'Merge']
 
 	for i in range(len(btns_text)):
 		btn = Button(
@@ -104,5 +109,7 @@ progress = ttk.Progressbar(menu_frame, orient="horizontal", mode="indeterminate"
 progress.start(10)
 
 menu_frame.grid_rowconfigure(menu_btn_count, weight=1)
+
+menu_btns[0].invoke()
 
 root.mainloop()
