@@ -18,6 +18,6 @@ Download `ZIP Handling.exe` and run it to start the application.
 - Merge two existing ZIP archives into one.
 
 
-### Project setup for developing:
+### Project setup for development:
 1. Install the required dependencies using `pip install -r requirements.txt`.
 2. Execute `python src/app.py` to run the app.

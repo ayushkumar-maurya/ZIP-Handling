@@ -1,11 +1,12 @@
 from tkinter import *
+from utils.attributes import *
 
 
 def get_label(parent, text, optional=True):
-	label_frame = Frame(parent)
-	Label(label_frame, text=text).pack(side="left")
+	label_frame = Frame(parent, bg=attr_bg2)
+	Label(label_frame, text=text, bg=attr_bg2).pack(side="left")
 	if not optional:
-		Label(label_frame, text='*', fg="#F00").pack(side="left")
+		Label(label_frame, text='*', bg=attr_bg2, fg="#F00").pack(side="left")
 	return label_frame
 
 
@@ -56,18 +57,3 @@ def get_submit_btn(parent, text):
 	btn.bind("<Enter>", lambda e: e.widget.config(bg=attr_submit_btn_hover_bg))
 	btn.bind("<Leave>", lambda e: e.widget.config(bg=attr_submit_btn_bg))
 	return btn
-
-
-# Attributes
-'''---------------------------------'''
-attr_entry_bg = '#FFFFFF'
-attr_entry_bd_bg = '#BFBFBF'
-attr_btn_bg = '#D9D9D9'
-attr_btn_hover_bg = '#BFBFBF'
-attr_submit_btn_bg = '#198754'
-attr_submit_btn_hover_bg = '#157347'
-attr_submit_btn_fg = '#FFFFFF'
-attr_submit_btn_hover_fg = attr_submit_btn_fg
-attr_row_margin = (0, 15)
-attr_col_margin = (7, 0)
-'''---------------------------------'''
