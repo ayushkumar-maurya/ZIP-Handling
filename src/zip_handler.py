@@ -24,6 +24,22 @@ class ZipHandler:
 		if os.path.exists(file_path):
 			os.remove(file_path)
 
+	def create_zip(self, src_dir, dest_zip, pwd=""):
+		self.__remove_file(dest_zip)
+		with pyzipper.AESZipFile(dest_zip, 'w') as zf:
+			if pwd != "":
+				zf.setpassword(pwd.encode())
+				zf.setencryption(pyzipper.WZ_AES, nbits=256)
+			for (root, dirs, files) in os.walk(src_dir, topdown=True):
+				for dir in dirs:
+					dir_path = os.path.join(root, dir)
+					arcname = os.path.relpath(dir_path, start=src_dir).replace(os.sep, "/").rstrip("/") + "/"
+					zf.writestr(arcname, b"")
+				for file in files:
+					file_path = os.path.join(root, file)
+					arcname = os.path.relpath(file_path, start=src_dir)
+					zf.write(file_path, arcname=arcname)
+
 	def extract_zip_files(self, src_zip, dest_dir, pwd=""):
 		if os.path.exists(dest_dir):
 			shutil.rmtree(dest_dir)
@@ -43,22 +59,6 @@ class ZipHandler:
 			msg_title="Files extraction completed",
 			msg_desc="Files are extracted successfully at {}".format(os.path.basename(dest_dir))
 		)
-
-	def create_zip(self, src_dir, dest_zip, pwd=""):
-		self.__remove_file(dest_zip)
-		with pyzipper.AESZipFile(dest_zip, 'w') as zf:
-			if pwd != "":
-				zf.setpassword(pwd.encode())
-				zf.setencryption(pyzipper.WZ_AES, nbits=256)
-			for (root, dirs, files) in os.walk(src_dir, topdown=True):
-				for dir in dirs:
-					dir_path = os.path.join(root, dir)
-					arcname = os.path.relpath(dir_path, start=src_dir).replace(os.sep, "/").rstrip("/") + "/"
-					zf.writestr(arcname, b"")
-				for file in files:
-					file_path = os.path.join(root, file)
-					arcname = os.path.relpath(file_path, start=src_dir)
-					zf.write(file_path, arcname=arcname)
 
 	def add_files_to_existing_zip(self, src_files, src_zip, zip_target_dir, pwd, dest_zip):
 		extracted_files_path = os.path.join(self.__path, "extracted_files")

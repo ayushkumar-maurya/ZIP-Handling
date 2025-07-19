@@ -2,7 +2,7 @@ import os
 from tkinter import filedialog
 from tkinter import messagebox
 from utils.common_feature_items import *
-from utils.zip_handler import ZipHandler
+from zip_handler import ZipHandler
 
 
 def dir_input(dir_entry):
