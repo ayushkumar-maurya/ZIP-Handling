@@ -32,7 +32,8 @@ def main(parent):
 app_desc1 = "Create a new ZIP archive\n\n"
 app_desc1 += "Extract all files from an existing ZIP\n\n"
 app_desc1 += "Add new files to an existing ZIP archive\n\n"
-app_desc1 += "Merge two existing ZIP archives into one"
+app_desc1 += "Merge two existing ZIP archives into one\n\n"
+app_desc1 += "Move files within ZIP"
 
 app_desc2 = "All the features listed above are fully compatible with encrypted ZIP files\n\n"
 app_desc2 += "The resultant archive will have all included files encrypted for secure storage and transfer"
