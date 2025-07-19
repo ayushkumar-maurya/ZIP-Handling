@@ -17,6 +17,7 @@ Download `ZIP Handling.exe` and run it to start the application.
 - Add new files to an existing ZIP archive.
 - Merge two existing ZIP archives into one.
 - Move files within ZIP.
+- Copy files within ZIP.
 
 
 ### Project setup for development:

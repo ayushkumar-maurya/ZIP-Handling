@@ -45,6 +45,7 @@ def validate_and_get_inputs(entries):
 	dest_zip = os.path.join(save_loc, "{} Modified.zip".format(os.path.basename(src_zip_name)))
 
 	res['inputs'] = {
+		'what_to_do': 'move',
 		'src_zip': src_zip,
 		'src_file': src_file,
 		'dest_dir': dest_dir,
@@ -62,7 +63,7 @@ def perform_move_operation(entries, show_progress_bar):
 		messagebox.showerror("Invalid Input", error)
 	else:
 		zip_handler = ZipHandler()
-		res = zip_handler.move_file_within_zip(**inputs)
+		res = zip_handler.move_or_copy_file_within_zip(**inputs)
 		if res['status']:
 			messagebox.showinfo(res['msg_title'], res['msg_desc'])
 		else:

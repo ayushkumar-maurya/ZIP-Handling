@@ -108,7 +108,7 @@ class ZipHandler:
 		self.clear()
 		return res
 
-	def move_file_within_zip(self, src_zip, src_file, dest_dir, pwd, dest_zip):
+	def move_or_copy_file_within_zip(self, what_to_do, src_zip, src_file, dest_dir, pwd, dest_zip):
 		extracted_files_path = os.path.join(self.__path, "extracted_files")
 		# Extracting zip files.
 		res = self.extract_zip_files(src_zip, extracted_files_path, pwd)
@@ -117,15 +117,25 @@ class ZipHandler:
 			if os.path.isfile(src_file_path):
 				dest_dir_path = os.path.join(extracted_files_path, dest_dir)
 				if os.path.isdir(dest_dir_path):
-					# Moving file to target folder present under extracted zip directory.
-					self.__remove_file(os.path.join(dest_dir_path, os.path.basename(src_file)))
-					shutil.move(src_file_path, dest_dir_path)
+					dest_file_path = os.path.join(dest_dir_path, os.path.basename(src_file))
+					# File will be moved or copied only if the src and dest paths are different.
+					if not (os.path.isfile(dest_file_path) and os.path.samefile(src_file_path, dest_file_path)):
+						self.__remove_file(dest_file_path)
+						# Moving file to target folder present under extracted zip directory.
+						if what_to_do == 'move':
+							shutil.move(src_file_path, dest_dir_path)
+						# Copying file to target folder present under extracted zip directory.
+						else:
+							shutil.copy(src_file_path, dest_dir_path)
 					# Creating zip based on files present under extracted zip directory.
 					self.create_zip(extracted_files_path, dest_zip, pwd)
 					res = self.__generate_response(
 						status=True,
-						msg_title="File moved successfully",
-						msg_desc="File moved successfully. ZIP Name: {}".format(os.path.basename(dest_zip))
+						msg_title="File {} successfully".format('moved' if what_to_do == 'move' else 'copied'),
+						msg_desc="File {} successfully. ZIP Name: {}".format(
+							'moved' if what_to_do == 'move' else 'copied',
+							os.path.basename(dest_zip)
+						)
 					)
 				else:
 					res = self.__generate_response(
@@ -136,8 +146,8 @@ class ZipHandler:
 			else:
 				res = self.__generate_response(
 					status=False,
-					msg_title="Invalid file to move",
-					msg_desc="{} is not present under existing zip.".format(src_file)
+					msg_title="Invalid file",
+					msg_desc="Please enter valid file path."
 				)
 
 		self.clear()
