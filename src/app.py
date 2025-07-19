@@ -3,8 +3,9 @@ from tkinter import *
 from tkinter import ttk
 from config import APP_NAME, APP_PATH
 from logo import APP_ICON
+from utils.attributes import *
 import home
-from features import create_feature, extract_feature, add_feature, merge_feature
+from features import create_feature, extract_feature, add_feature, merge_feature, move_feature, copy_feature
 
 
 def on_menu_btn_enter(e):
@@ -42,11 +43,15 @@ def on_menu_btn_click(btn):
 		add_feature.main(feature_frame, show_progress_bar)
 	elif btn['text'] == 'Merge':
 		merge_feature.main(feature_frame, show_progress_bar)
+	elif btn['text'] == 'Move':
+		move_feature.main(feature_frame, show_progress_bar)
+	elif btn['text'] == 'Copy':
+		copy_feature.main(feature_frame, show_progress_bar)
 
 
 def create_menu_btns():
 	btns = []
-	btns_text = ['Home', 'Create', 'Extract', 'Add', 'Merge']
+	btns_text = ['Home', 'Create', 'Extract', 'Add', 'Merge', 'Move', 'Copy']
 
 	for i in range(len(btns_text)):
 		btn = Button(
@@ -75,16 +80,6 @@ def show_progress_bar(show=True):
 		progress.grid(row=menu_btn_count, column=0, pady=(15, 1), sticky="sew")
 	else:
 		progress.grid_forget()
-
-
-# Attributes
-'''---------------------------------'''
-attr_bg1 = '#D9D9D9'
-attr_bg2 = '#F2F2F2'
-attr_btn_bg = attr_bg1
-attr_btn_hover_bg = '#BFBFBF'
-attr_btn_active_bg = attr_bg2
-'''---------------------------------'''
 
 
 # Creating project directory.

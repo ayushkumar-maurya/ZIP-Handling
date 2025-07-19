@@ -16,8 +16,10 @@ Download `ZIP Handling.exe` and run it to start the application.
 - Extract all files from an existing ZIP.
 - Add new files to an existing ZIP archive.
 - Merge two existing ZIP archives into one.
+- Move files within ZIP.
+- Copy files within ZIP.
 
 
-### Project setup for developing:
+### Project setup for development:
 1. Install the required dependencies using `pip install -r requirements.txt`.
 2. Execute `python src/app.py` to run the app.
